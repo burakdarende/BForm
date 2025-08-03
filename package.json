@@ -1,0 +1,16 @@
+{
+  "name": "bform",
+  "version": "1.0.0",
+  "description": "Modern form yönetim sistemi - Typeform benzeri",
+  "scripts": {
+    "dev": "docker-compose up --build",
+    "start": "docker-compose up",
+    "stop": "docker-compose down",
+    "install-frontend": "cd frontend && npm install",
+    "install-backend": "cd backend && npm install",
+    "setup": "npm run install-frontend && npm run install-backend"
+  },
+  "keywords": ["form", "survey", "appointment", "react", "nodejs"],
+  "author": "Burak",
+  "license": "MIT"
+}

@@ -1,0 +1,966 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+  
+  body {
+    @apply bg-gray-50 text-gray-900 antialiased;
+  }
+
+  * {
+    @apply border-gray-300;
+  }
+}
+
+@layer components {
+  /* Form Controls */
+  .form-input {
+    @apply block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm transition-colors;
+  }
+
+  .form-textarea {
+    @apply block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm resize-none transition-colors;
+  }
+
+  .form-select {
+    @apply block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm transition-colors;
+  }
+
+  .form-checkbox {
+    @apply h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded transition-colors;
+  }
+
+  .form-radio {
+    @apply h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 transition-colors;
+  }
+
+  /* Buttons */
+  .btn {
+    @apply inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 transition-all duration-200;
+  }
+
+  .btn-primary {
+    @apply btn bg-primary-600 text-white hover:bg-primary-700 focus:ring-primary-500 shadow-sm;
+  }
+
+  .btn-secondary {
+    @apply btn bg-gray-600 text-white hover:bg-gray-700 focus:ring-gray-500 shadow-sm;
+  }
+
+  .btn-outline {
+    @apply btn bg-white border-gray-300 text-gray-700 hover:bg-gray-50 focus:ring-primary-500 shadow-sm;
+  }
+
+  .btn-ghost {
+    @apply btn bg-transparent text-gray-700 hover:bg-gray-100 focus:ring-gray-500;
+  }
+
+  .btn-danger {
+    @apply btn bg-red-600 text-white hover:bg-red-700 focus:ring-red-500 shadow-sm;
+  }
+
+  .btn-success {
+    @apply btn bg-green-600 text-white hover:bg-green-700 focus:ring-green-500 shadow-sm;
+  }
+
+  .btn-sm {
+    @apply px-3 py-1.5 text-xs;
+  }
+
+  .btn-lg {
+    @apply px-6 py-3 text-base;
+  }
+
+  .btn-xl {
+    @apply px-8 py-4 text-lg;
+  }
+
+  /* Cards */
+  .card {
+    @apply bg-white border border-gray-200 rounded-xl shadow-soft;
+  }
+
+  .card-header {
+    @apply px-6 py-4 border-b border-gray-200;
+  }
+
+  .card-body {
+    @apply px-6 py-4;
+  }
+
+  .card-footer {
+    @apply px-6 py-4 border-t border-gray-200 bg-gray-50 rounded-b-xl;
+  }
+
+  /* Form Field Group */
+  .field-group {
+    @apply space-y-2;
+  }
+
+  .field-label {
+    @apply block text-sm font-medium text-gray-700;
+  }
+
+  .field-error {
+    @apply text-sm text-red-600;
+  }
+
+  .field-help {
+    @apply text-sm text-gray-500;
+  }
+
+  /* Loading States */
+  .loading-spinner {
+    @apply animate-spin rounded-full h-5 w-5 border-b-2 border-current;
+  }
+
+  .loading-pulse {
+    @apply animate-pulse bg-gray-200 rounded;
+  }
+
+  /* Form Builder Specific */
+  .form-preview {
+    @apply bg-white border-2 border-dashed border-gray-300 rounded-xl p-8 min-h-96;
+  }
+
+  .form-preview.has-fields {
+    @apply border-solid border-gray-200;
+  }
+
+  .field-item {
+    @apply bg-white border border-gray-200 rounded-lg p-4 mb-4 hover:border-primary-300 hover:shadow-soft transition-all duration-200;
+  }
+
+  .field-item.active {
+    @apply border-primary-500 shadow-medium;
+  }
+
+  .field-item.dragging {
+    @apply opacity-50 transform rotate-2;
+  }
+
+  .drop-zone {
+    @apply border-2 border-dashed border-gray-300 rounded-lg p-8 text-center text-gray-500 bg-gray-50;
+  }
+
+  .drop-zone.active {
+    @apply border-primary-500 bg-primary-50 text-primary-700;
+  }
+
+  /* Responsive Utilities */
+  .container-responsive {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  .grid-responsive {
+    @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6;
+  }
+}
+
+@layer utilities {
+  .text-gradient {
+    @apply bg-gradient-to-r from-primary-600 to-blue-600 bg-clip-text text-transparent;
+  }
+
+  .bg-gradient-primary {
+    @apply bg-gradient-to-r from-primary-500 to-blue-600;
+  }
+
+  .shadow-color-primary {
+    box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.1), 0 10px 10px -5px rgba(59, 130, 246, 0.04);
+  }
+
+  .scrollbar-thin {
+    scrollbar-width: thin;
+    scrollbar-color: rgb(156 163 175) transparent;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background-color: rgb(156 163 175);
+    border-radius: 3px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+    background-color: rgb(107 114 128);
+  }
+
+  /* ===========================
+   🎨 TYPEFORM MODERN UI THEMES
+   =========================== */
+
+/* Default Theme Variables */
+:root {
+  --theme-background: #FFFFFF;
+  --theme-gradient: none;
+  --text-color: #1F2937;
+  --text-light: #6B7280;
+  --primary-color: #3B82F6;
+  --input-border-color: rgba(107, 114, 128, 0.3);
+  --placeholder-color: rgba(107, 114, 128, 0.6);
+  --button-text: #FFFFFF;
+}
+
+/* Theme 1: Classic Blue (Light) */
+.theme-classic-blue {
+  --theme-background: #F8FAFC;
+  --theme-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --text-color: #1E293B;
+  --text-light: #64748B;
+  --primary-color: #3B82F6;
+  --input-border-color: rgba(59, 130, 246, 0.3);
+  --placeholder-color: rgba(100, 116, 139, 0.6);
+  --button-text: #FFFFFF;
+}
+
+/* Theme 2: Midnight Dark */
+.theme-midnight-dark {
+  --theme-background: #0F172A;
+  --theme-gradient: linear-gradient(135deg, #1e3a8a 0%, #312e81 100%);
+  --text-color: #F1F5F9;
+  --text-light: #94A3B8;
+  --primary-color: #60A5FA;
+  --input-border-color: rgba(148, 163, 184, 0.3);
+  --placeholder-color: rgba(148, 163, 184, 0.5);
+  --button-text: #0F172A;
+}
+
+/* Theme 3: Purple Dream */
+.theme-purple-dream {
+  --theme-background: #FAF5FF;
+  --theme-gradient: linear-gradient(135deg, #a855f7 0%, #ec4899 100%);
+  --text-color: #581C87;
+  --text-light: #7C3AED;
+  --primary-color: #A855F7;
+  --input-border-color: rgba(168, 85, 247, 0.3);
+  --placeholder-color: rgba(124, 58, 237, 0.6);
+  --button-text: #FFFFFF;
+}
+
+/* Theme 4: Forest Green */
+.theme-forest-green {
+  --theme-background: #F0FDF4;
+  --theme-gradient: linear-gradient(135deg, #22c55e 0%, #059669 100%);
+  --text-color: #14532D;
+  --text-light: #16A34A;
+  --primary-color: #22C55E;
+  --input-border-color: rgba(34, 197, 94, 0.3);
+  --placeholder-color: rgba(22, 163, 74, 0.6);
+  --button-text: #FFFFFF;
+}
+
+/* Theme 5: Sunset Orange */
+.theme-sunset-orange {
+  --theme-background: #FFF7ED;
+  --theme-gradient: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+  --text-color: #9A3412;
+  --text-light: #EA580C;
+  --primary-color: #F97316;
+  --input-border-color: rgba(249, 115, 22, 0.3);
+  --placeholder-color: rgba(234, 88, 12, 0.6);
+  --button-text: #FFFFFF;
+}
+
+/* Theme 6: Ocean Teal */
+.theme-ocean-teal {
+  --theme-background: #F0FDFA;
+  --theme-gradient: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
+  --text-color: #134E4A;
+  --text-light: #0F766E;
+  --primary-color: #14B8A6;
+  --input-border-color: rgba(20, 184, 166, 0.3);
+  --placeholder-color: rgba(15, 118, 110, 0.6);
+  --button-text: #FFFFFF;
+}
+
+/* Theme 7: Rose Pink */
+.theme-rose-pink {
+  --theme-background: #FFF1F2;
+  --theme-gradient: linear-gradient(135deg, #f43f5e 0%, #e11d48 100%);
+  --text-color: #881337;
+  --text-light: #BE123C;
+  --primary-color: #F43F5E;
+  --input-border-color: rgba(244, 63, 94, 0.3);
+  --placeholder-color: rgba(190, 18, 60, 0.6);
+  --button-text: #FFFFFF;
+}
+
+/* Theme 8: Cosmic Purple (Dark) */
+.theme-cosmic-purple {
+  --theme-background: #1C1917;
+  --theme-gradient: linear-gradient(135deg, #7c3aed 0%, #2563eb 100%);
+  --text-color: #E7E5E4;
+  --text-light: #A8A29E;
+  --primary-color: #8B5CF6;
+  --input-border-color: rgba(168, 162, 158, 0.3);
+  --placeholder-color: rgba(168, 162, 158, 0.5);
+  --button-text: #1C1917;
+}
+
+/* Theme 9: Emerald Glow */
+.theme-emerald-glow {
+  --theme-background: #ECFDF5;
+  --theme-gradient: linear-gradient(135deg, #10b981 0%, #047857 100%);
+  --text-color: #064E3B;
+  --text-light: #047857;
+  --primary-color: #10B981;
+  --input-border-color: rgba(16, 185, 129, 0.3);
+  --placeholder-color: rgba(4, 120, 87, 0.6);
+  --button-text: #FFFFFF;
+}
+
+/* Theme 10: Cyber Blue (Dark) */
+.theme-cyber-blue {
+  --theme-background: #0C1426;
+  --theme-gradient: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
+  --text-color: #F0F9FF;
+  --text-light: #7DD3FC;
+  --primary-color: #06B6D4;
+  --input-border-color: rgba(125, 211, 252, 0.3);
+  --placeholder-color: rgba(125, 211, 252, 0.5);
+  --button-text: #0C1426;
+}
+
+/* Typeform Container */
+.typeform-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow-y: auto;
+  transition: all 0.3s ease;
+  background: var(--theme-background);
+  background-image: var(--theme-gradient);
+  color: var(--text-color);
+}
+
+  /* Progress Bar */
+  .typeform-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: rgba(255, 255, 255, 0.1);
+    z-index: 1000;
+  }
+
+  .typeform-progress-bar {
+    height: 100%;
+    transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    background: var(--primary-color, #3B82F6);
+  }
+
+  /* Question Container */
+  .typeform-question-container {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    min-height: 100vh;
+  }
+
+  .typeform-question {
+    max-width: 680px;
+    width: 100%;
+    animation: slideUp 0.6s ease-out;
+    transition: all 0.4s ease-out;
+  }
+
+  .typeform-question.transitioning {
+    pointer-events: none;
+  }
+
+  @keyframes slideUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Question Header */
+  .question-header {
+    margin-bottom: 2rem;
+  }
+
+  .question-number {
+    display: inline-block;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--primary-color, #3B82F6);
+    margin-bottom: 0.5rem;
+  }
+
+  .question-text {
+    font-size: 2.25rem;
+    font-weight: 600;
+    line-height: 1.2;
+    margin: 0 0 1rem 0;
+    animation: fadeIn 0.8s ease-out;
+  }
+
+  @media (max-width: 768px) {
+    .question-text {
+      font-size: 1.75rem;
+    }
+  }
+
+  .question-description {
+    font-size: 1.125rem;
+    opacity: 0.8;
+    margin: 0;
+    line-height: 1.5;
+    animation: fadeIn 1s ease-out;
+  }
+
+  .required {
+    color: #ef4444;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  /* Answer Container */
+  .answer-container {
+    margin-bottom: 2rem;
+  }
+
+  /* Typeform-Style Input Styles */
+  .typeform-input {
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid var(--input-border-color, rgba(255, 255, 255, 0.3));
+    font-size: 1.75rem;
+    font-weight: 400;
+    padding: 1rem 0;
+    width: 100%;
+    outline: none;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    color: var(--text-color, inherit);
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border-radius: 0;
+    letter-spacing: 0.025em;
+  }
+
+  .typeform-input:focus {
+    border-bottom-color: var(--primary-color, #3B82F6);
+    border-bottom-width: 3px;
+    transform: translateY(-1px);
+  }
+
+  .typeform-input::placeholder {
+    color: var(--placeholder-color, rgba(107, 114, 128, 0.6)) !important;
+    opacity: 1 !important;
+    font-weight: 300;
+  }
+
+  /* Force placeholder visibility */
+  input::placeholder,
+  textarea::placeholder {
+    color: var(--placeholder-color, rgba(107, 114, 128, 0.7)) !important;
+    opacity: 1 !important;
+  }
+
+  /* Mobile-specific input styles - keep underline style */
+  .typeform-input[type="date"],
+  .typeform-input[type="time"],
+  .typeform-input[type="tel"],
+  .typeform-input[type="email"],
+  .typeform-input[type="number"] {
+    font-size: 18px; /* Prevents zoom on iOS */
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid var(--input-border-color, rgba(255, 255, 255, 0.3));
+    padding: 1rem 0;
+    margin-top: 0.5rem;
+  }
+
+  .typeform-input[type="date"]:focus,
+  .typeform-input[type="time"]:focus,
+  .typeform-input[type="tel"]:focus,
+  .typeform-input[type="email"]:focus,
+  .typeform-input[type="number"]:focus {
+    border-bottom-color: var(--primary-color, #3B82F6);
+    border-bottom-width: 3px;
+    transform: translateY(-1px);
+  }
+
+  /* iOS specific styles */
+  @supports (-webkit-touch-callout: none) {
+    .typeform-input[type="date"],
+    .typeform-input[type="time"] {
+      -webkit-appearance: none;
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 12px;
+      padding: 1.2rem;
+      text-align: center;
+      font-size: 18px;
+    }
+  }
+
+  /* Option Buttons */
+  .typeform-option {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 1rem 1.5rem;
+    margin-bottom: 0.75rem;
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid transparent;
+    border-radius: 12px;
+    font-size: 1.125rem;
+    color: inherit;
+    text-align: left;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    animation: slideInLeft 0.5s ease-out;
+    opacity: 0;
+    animation-fill-mode: forwards;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+    min-height: 60px;
+  }
+
+  @keyframes slideInLeft {
+    from {
+      opacity: 0;
+      transform: translateX(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  .typeform-option:hover,
+  .typeform-option:active {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: var(--primary-color, #3B82F6);
+    transform: translateX(8px) scale(1.02);
+  }
+
+  /* Touch feedback for mobile */
+  @media (hover: none) and (pointer: coarse) {
+    .typeform-option:active {
+      background: rgba(255, 255, 255, 0.25);
+      transform: scale(0.98);
+    }
+  }
+
+  .option-letter {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    background: var(--primary-color, #3B82F6);
+    color: white;
+    border-radius: 4px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    margin-right: 1rem;
+    flex-shrink: 0;
+  }
+
+  .option-text {
+    flex: 1;
+  }
+
+  /* Yes/No Buttons */
+  .typeform-yesno {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.25rem 2.5rem;
+    margin: 0.5rem;
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid transparent;
+    border-radius: 50px;
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: inherit;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+    min-height: 60px;
+    min-width: 120px;
+  }
+
+  .typeform-yesno:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(1.05);
+  }
+
+  .typeform-yesno.yes:hover {
+    border-color: #10b981;
+    background: rgba(16, 185, 129, 0.2);
+  }
+
+  .typeform-yesno.no:hover {
+    border-color: #ef4444;
+    background: rgba(239, 68, 68, 0.2);
+  }
+
+  /* Navigation */
+  .typeform-navigation {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+
+  .nav-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem 2rem;
+    background: var(--primary-color, #3B82F6);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    outline: none;
+    -webkit-tap-highlight-color: transparent;
+    min-height: 56px;
+    min-width: 120px;
+  }
+
+  .nav-button:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  }
+
+  .nav-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  .prev-button {
+    background: rgba(255, 255, 255, 0.2);
+    color: inherit;
+  }
+
+  .next-button {
+    background: var(--primary-color, #3B82F6);
+  }
+
+  /* Keyboard Hint */
+  .keyboard-hint {
+    margin-top: 1rem;
+    text-align: center;
+    opacity: 0.6;
+    font-size: 0.875rem;
+  }
+
+  .keyboard-hint kbd {
+    padding: 0.25rem 0.5rem;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 600;
+  }
+
+  /* Footer */
+  .typeform-footer {
+    position: fixed;
+    bottom: 1rem;
+    right: 1rem;
+    font-size: 0.75rem;
+    opacity: 0.5;
+    z-index: 100;
+  }
+
+  /* Loading & Error States */
+  .typeform-loading,
+  .typeform-error {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    text-align: center;
+    color: #374151;
+  }
+
+  .typeform-loading .loading-spinner {
+    margin-bottom: 1rem;
+  }
+
+  .typeform-error h1 {
+    font-size: 2rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+
+  /* Error Message */
+  .error-message {
+    color: #ef4444;
+    font-size: 0.875rem;
+    margin-top: 0.5rem;
+    animation: shake 0.5s ease-in-out;
+  }
+
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+  }
+
+  /* Small Spinner */
+  .loading-spinner-sm {
+    width: 16px;
+    height: 16px;
+    border: 2px solid #ffffff;
+    border-top: 2px solid transparent;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  /* Success Page */
+  .success-container {
+    text-align: center;
+    max-width: 500px;
+    margin: 0 auto;
+  }
+
+  .success-header {
+    margin-bottom: 3rem;
+  }
+
+  .success-icon {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+    animation: bounceIn 0.6s ease-out;
+  }
+
+  @keyframes bounceIn {
+    0% { 
+      transform: scale(0.3);
+      opacity: 0;
+    }
+    50% { 
+      transform: scale(1.05);
+    }
+    70% { 
+      transform: scale(0.9);
+    }
+    100% { 
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+
+  .success-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    animation: fadeIn 0.8s ease-out 0.2s both;
+  }
+
+  .success-message {
+    font-size: 1.25rem;
+    opacity: 0.9;
+    line-height: 1.6;
+    animation: fadeIn 1s ease-out 0.4s both;
+  }
+
+  .success-actions {
+    margin-top: 3rem;
+    space-y: 1.5rem;
+  }
+
+  .social-links {
+    margin-bottom: 2rem;
+  }
+
+  .social-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem 2rem;
+    background: linear-gradient(135deg, #833AB4 0%, #FD1D1D 50%, #FCAF45 100%);
+    color: white;
+    text-decoration: none;
+    border-radius: 50px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    animation: slideUp 0.8s ease-out 0.6s both;
+  }
+
+  .social-link:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(131, 58, 180, 0.3);
+    color: white;
+  }
+
+  .social-link svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  .new-form-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.875rem 2rem;
+    background: var(--primary-color, #3B82F6);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    animation: slideUp 0.8s ease-out 0.8s both;
+  }
+
+  .new-form-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  }
+
+  /* Mobile First Responsive */
+  @media (max-width: 768px) {
+    .typeform-question-container {
+      padding: 1rem;
+      min-height: 100vh;
+      min-height: 100dvh; /* Dynamic viewport height for mobile */
+    }
+    
+    .typeform-input {
+      font-size: 18px; /* Prevents zoom on iOS */
+    }
+
+    .typeform-input[type="text"],
+    .typeform-input[type="email"] {
+      font-size: 18px;
+      padding: 1rem 0;
+    }
+
+    .typeform-input[type="date"],
+    .typeform-input[type="time"],
+    .typeform-input[type="tel"],
+    .typeform-input[type="number"] {
+      font-size: 18px;
+      padding: 1.25rem;
+      border-radius: 12px;
+    }
+    
+    .typeform-option {
+      font-size: 1.1rem;
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 1rem;
+      border-radius: 16px;
+      min-height: 64px;
+    }
+    
+    .typeform-yesno {
+      font-size: 1.1rem;
+      padding: 1.25rem 2rem;
+      margin: 0.75rem;
+      min-height: 64px;
+      border-radius: 32px;
+    }
+
+    .nav-button {
+      padding: 1.25rem 2.5rem;
+      font-size: 1.1rem;
+      min-height: 64px;
+      border-radius: 32px;
+    }
+
+    .question-text {
+      font-size: 1.75rem;
+      line-height: 1.3;
+    }
+
+    .question-description {
+      font-size: 1rem;
+    }
+
+    .success-icon {
+      font-size: 4rem;
+    }
+
+    .success-title {
+      font-size: 2.25rem;
+    }
+
+    .success-message {
+      font-size: 1.25rem;
+    }
+
+    .social-link {
+      padding: 1.25rem 2rem;
+      font-size: 1rem;
+      min-height: 64px;
+    }
+
+    .new-form-button {
+      padding: 1.25rem 2rem;
+      font-size: 1rem;
+      min-height: 64px;
+    }
+  }
+
+  /* Extra small screens */
+  @media (max-width: 480px) {
+    .typeform-question-container {
+      padding: 0.75rem;
+    }
+
+    .question-text {
+      font-size: 1.5rem;
+    }
+
+    .typeform-option {
+      padding: 1rem 1.25rem;
+      font-size: 1rem;
+    }
+
+    .typeform-yesno {
+      padding: 1rem 1.5rem;
+      margin: 0.5rem;
+      font-size: 1rem;
+    }
+  }
+
+  /* High DPI screens */
+  @media (-webkit-min-device-pixel-ratio: 2) {
+    .typeform-input,
+    .typeform-option,
+    .nav-button {
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+  }
+}

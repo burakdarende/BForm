@@ -1,0 +1,135 @@
+---
+description: >
+  BForm, modern ve özelleştirilebilir bir Typeform alternatifi olarak geliştirilmiştir.
+  Randevu alma, form oluşturma, paylaşım, e-posta ve Google Calendar entegrasyonu içerir.
+globs:
+  - "frontend/**/*.{js,ts,jsx,tsx}"
+  - "backend/**/*.{js,ts}"
+  - "docker-compose.yml"
+alwaysApply: true
+---
+
+# Proje: BForm
+
+**BForm**, kullanıcıların sürükle-bırak arayüzle form oluşturabileceği, bu formları paylaşabileceği ve gelen yanıtları yönetebileceği modern bir form yönetim sistemidir. Randevu alma altyapısı başta olmak üzere; anketler, başvuru formları gibi farklı senaryolara da uygundur.
+
+---
+
+# Teknolojiler
+
+- **Frontend**: React (TypeScript), TailwindCSS, React Hook Form, DnD Kit
+- **Backend**: Node.js (Express), MongoDB (Mongoose), Nodemailer, Google Calendar API, Twilio (opsiyonel)
+- **Ortam**: Docker + Docker Compose
+- **Editör**: VSCode önerilir
+
+---
+
+# Kodlama Kuralları
+
+## Genel
+- Dosya adları: `kebab-case`
+- Bileşen adları: `PascalCase`
+- Fonksiyonlar: `camelCase`
+- Tırnaklar: `'tek tırnak'`
+- Satır sonları: `;` zorunlu
+- Satır uzunluğu: Maks. 100 karakter
+
+## Frontend
+- Fonksiyonel bileşenler kullanılmalı
+- `useForm`, `useState`, `useEffect` gibi hook’lar doğru şekilde kullanılmalı
+- Form validasyonu `React Hook Form` ile yapılmalı
+- Sürükle-bırak arayüzü `Dnd Kit` ile uygulanmalı
+- TailwindCSS sınıfları sade ve tekrar etmeyen şekilde yazılmalı
+
+## Backend
+- Route’lar `/routes` altında tanımlanmalı
+- Mongoose modelleri `/models` klasöründe olmalı
+- Tüm harici servisler (`email`, `calendar`, `whatsapp`) `/services` altında soyutlanmalı
+- Ortak yardımcı fonksiyonlar `/utils` altında toplanmalı
+- Ortam değişkenleri `.env` dosyasından alınmalı
+
+---
+
+# Proje Yapısı
+
+bform/
+├── backend/
+│ ├── server.js
+│ ├── routes/
+│ ├── models/
+│ └── services/
+├── frontend/
+│ ├── public/
+│ └── src/
+│ ├── components/
+│ ├── pages/
+│ └── utils/
+├── docker-compose.yml
+├── .env
+└── README.md
+
+
+---
+
+# Özellik Kuralları
+
+- Her formun özel URL’si olmalı (örnek: `/randevu-formu`)
+- Admin panelde form oluşturma, yanıtları görme ve formu paylaşma seçenekleri bulunmalı
+- Formlar tamamen responsive olmalı (mobil uyum)
+- Form gönderildiğinde:
+  - Admin’e e-posta gönderilmeli (`Nodemailer`)
+  - Google Calendar’a etkinlik eklenmeli
+  - (Opsiyonel) WhatsApp mesajı gönderilmeli (`Twilio`)
+- Form oluşturucu arayüzü sürükle-bırak desteklemeli
+- Her form önizlenebilir olmalı (preview mode)
+
+---
+
+# Commit ve Branch Kuralları
+
+- Branch isimleri:
+  - `feature/özellik-adi`
+  - `fix/hata-adi`
+  - `chore/yapilandirma`
+- Commit mesaj formatı:
+
+feat: yeni özellik
+fix: hata düzeltmesi
+docs: dokümantasyon
+refactor: yapısal düzenleme
+chore: yapılandırma, bağımlılık
+
+
+---
+
+# Docker ve Ortam
+
+- `docker-compose up` komutu tüm projeyi ayağa kaldırmalı
+- Servisler: `frontend`, `backend`, `mongo`
+- Mongo bağlantısı: `mongodb://mongo:27017/bform`
+- Ortam değişkenleri `.env` dosyasından alınmalı
+- Dockerfile'lar hem frontend hem backend için ayrı ayrı yazılmalı
+
+---
+
+# Test ve Doğrulama Kuralları
+
+- Yeni oluşturulan form MongoDB’ye yazılmalı
+- Admin panelde formlar listelenmeli ve yanıtları görüntülenebilmeli
+- Google Calendar API ile etkinlik başarıyla oluşturulmalı
+- E-posta gönderimi sorunsuz çalışmalı
+- Mobil tarayıcılarda form ekranı %100 uyumlu olmalı
+
+---
+
+# Önerilen VSCode Eklentileri
+
+- ESLint
+- Prettier
+- Tailwind CSS IntelliSense
+- Docker
+- GitLens
+
+---
+
+bana yaptıklarını "şunlar yapıldı diye uzun uzun yapıldı diye anlatma. kısa cevaplar kullan fazla token harcama. net ol. gereksiz emoji falan kullanma. token'dan tasarruf et bana cevap verirken ama kod yazarken tasaruf etmene gerek yok.
