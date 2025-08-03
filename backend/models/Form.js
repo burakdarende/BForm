@@ -39,6 +39,10 @@ const fieldSchema = new mongoose.Schema({
     allowOther: Boolean,
     maxFiles: Number,
     acceptedFileTypes: [String]
+  },
+  isAppointment: {
+    type: Boolean,
+    default: false
   }
 });
 

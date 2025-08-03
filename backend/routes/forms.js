@@ -70,6 +70,11 @@ router.post('/', auth, [
 
     const { title, description, fields, settings, styling } = req.body;
 
+    // 🔍 DEBUG: Log incoming fields to check isAppointment
+    console.log('🔍 CREATE Form Debug:');
+    console.log('- Fields received:', fields?.map(f => ({ id: f.id, type: f.type, isAppointment: f.isAppointment })));
+    console.log('- Full request body keys:', Object.keys(req.body));
+
     // Generate unique slug
     let slug = generateSlug(title);
     let existingForm = await Form.findOne({ slug });
@@ -126,6 +131,11 @@ router.put('/:id', auth, async (req, res) => {
     if (!form) {
       return res.status(404).json({ message: 'Form bulunamadı' });
     }
+
+    // 🔍 DEBUG: Log incoming fields to check isAppointment  
+    console.log('🔍 UPDATE Form Debug:');
+    console.log('- Fields received:', req.body.fields?.map(f => ({ id: f.id, type: f.type, isAppointment: f.isAppointment })));
+    console.log('- Full request body keys:', Object.keys(req.body));
 
     // Update fields
     Object.assign(form, req.body);

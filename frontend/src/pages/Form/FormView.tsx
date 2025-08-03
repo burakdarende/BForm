@@ -543,14 +543,21 @@ const FormView: React.FC = () => {
             type="date"
             {...fieldProps}
             autoFocus
+            lang="tr" // Türkçe locale for dd/mm/yyyy display
+            defaultValue="2025-01-01" // Default 2025 yılı
+            min="2025-01-01" // Min 2025 yılı
+            max="2026-12-31" // Max 2026 yılı
             style={{
               WebkitAppearance: 'none',
               appearance: 'none'
             }}
             onChange={(e) => {
               setValue(field.id, e.target.value);
-              if (e.target.value) {
-                setTimeout(handleNext, 800);
+            }}
+            onKeyDown={(e) => {
+              // Only advance on Enter key
+              if (e.key === 'Enter' && e.target.value) {
+                setTimeout(handleNext, 300);
               }
             }}
           />
@@ -562,14 +569,30 @@ const FormView: React.FC = () => {
             type="time"
             {...fieldProps}
             autoFocus
+            step="900" // 15 minutes intervals (900 seconds)
             style={{
               WebkitAppearance: 'none',
               appearance: 'none'
             }}
             onChange={(e) => {
-              setValue(field.id, e.target.value);
-              if (e.target.value) {
-                setTimeout(handleNext, 800);
+              let value = e.target.value;
+              if (value) {
+                // Round to nearest 15-minute interval
+                const [hours, minutes] = value.split(':');
+                const roundedMinutes = Math.round(parseInt(minutes) / 15) * 15;
+                const finalMinutes = roundedMinutes === 60 ? 0 : roundedMinutes;
+                const finalHours = roundedMinutes === 60 ? parseInt(hours) + 1 : parseInt(hours);
+                
+                if (finalHours < 24) {
+                  value = `${finalHours.toString().padStart(2, '0')}:${finalMinutes.toString().padStart(2, '0')}`;
+                }
+              }
+              setValue(field.id, value);
+            }}
+            onKeyDown={(e) => {
+              // Only advance on Enter key
+              if (e.key === 'Enter' && e.target.value) {
+                setTimeout(handleNext, 300);
               }
             }}
           />

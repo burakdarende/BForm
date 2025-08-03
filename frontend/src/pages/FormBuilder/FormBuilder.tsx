@@ -177,6 +177,8 @@ const FormBuilder: React.FC = () => {
   };
 
   const updateField = (fieldId: string, updates: Partial<FormField>) => {
+    console.log('🔍 FormBuilder updateField:', fieldId, updates);
+    
     setForm(prev => ({
       ...prev,
       fields: prev.fields?.map(field => 
@@ -222,6 +224,16 @@ const FormBuilder: React.FC = () => {
       return;
     }
 
+    console.log('🔍 Saving form with fields:', form.fields.map(f => ({ 
+      id: f.id, 
+      type: f.type, 
+      isAppointment: f.isAppointment 
+    })));
+
+    const formPayload = JSON.stringify(form);
+    console.log('🔍 Actual API payload:', formPayload);
+    console.log('🔍 Parsed back payload fields:', JSON.parse(formPayload).fields?.map(f => ({ id: f.id, type: f.type, isAppointment: f.isAppointment })));
+
     try {
       const isEditing = formId && formId !== 'new';
       const url = isEditing ? `/api/forms/${formId}` : '/api/forms';
@@ -233,7 +245,7 @@ const FormBuilder: React.FC = () => {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem('auth_token')}`
         },
-        body: JSON.stringify(form)
+        body: formPayload
       });
 
       if (response.ok) {
@@ -700,6 +712,27 @@ const FormBuilder: React.FC = () => {
                       <span className="ml-2">Zorunlu alan</span>
                     </label>
                   </div>
+
+                  {/* Randevu checkbox for date/time fields */}
+                  {(selectedField.type === 'date' || selectedField.type === 'time') && (
+                    <div className="field-group">
+                      <label className="flex items-center">
+                        <input
+                          type="checkbox"
+                          className="form-checkbox"
+                          checked={selectedField.isAppointment || false}
+                          onChange={(e) => {
+                            console.log('🔍 Checkbox changed:', e.target.checked, 'for field:', selectedField.id);
+                            updateField(selectedField.id, { isAppointment: e.target.checked });
+                          }}
+                        />
+                        <span className="ml-2">📅 Randevu alanı</span>
+                      </label>
+                      <p className="text-sm text-gray-600 mt-1">
+                        Bu alan işaretlenirse, form gönderildiğinde Google Takvim'e randevu eklenir.
+                      </p>
+                    </div>
+                  )}
 
                   {/* Options for select, radio, checkbox */}
                   {(selectedField.type === 'select' || selectedField.type === 'radio' || selectedField.type === 'checkbox') && (

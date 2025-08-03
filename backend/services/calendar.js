@@ -35,21 +35,18 @@ class CalendarService {
       throw new Error('Google Calendar not configured');
     }
 
-    const { calendar: calendarSettings } = form.settings.notifications;
-    
-    // Extract date/time from form responses
-    const dateTimeInfo = this.extractDateTimeFromResponses(response.responses);
+    // Extract date/time from form responses using form fields metadata
+    const dateTimeInfo = this.extractDateTimeFromResponses(response.responses, form.fields);
     
     if (!dateTimeInfo.start) {
-      console.warn('No date/time found in form responses');
+      console.warn('No appointment date/time found in form responses');
       return null;
     }
 
     // Create event details
-    const eventTitle = calendarSettings.title || 
-      `${form.title} - ${submitterInfo.name || submitterInfo.email || 'Randevu'}`;
+    const eventTitle = `${form.title} - ${submitterInfo.name || submitterInfo.email || 'Randevu'}`;
     
-    const duration = calendarSettings.duration || 30; // minutes
+    const duration = 30; // Default 30 minutes appointment
     const endTime = new Date(dateTimeInfo.start.getTime() + (duration * 60 * 1000));
 
     const event = {
@@ -96,20 +93,29 @@ class CalendarService {
     }
   }
 
-  extractDateTimeFromResponses(responses) {
+  extractDateTimeFromResponses(responses, formFields = []) {
     let dateValue = null;
     let timeValue = null;
 
+    // Create a map for quick field lookup
+    const fieldMap = {};
+    formFields.forEach(field => {
+      fieldMap[field.id] = field;
+    });
+
     responses.forEach(response => {
       const fieldType = response.fieldType.toLowerCase();
-      const fieldLabel = response.fieldLabel.toLowerCase();
-
-      if (fieldType === 'date' || fieldLabel.includes('tarih')) {
-        dateValue = new Date(response.value);
-      } else if (fieldType === 'time' || fieldLabel.includes('saat')) {
-        timeValue = response.value;
-      } else if (fieldType === 'datetime') {
-        return { start: new Date(response.value) };
+      const field = fieldMap[response.fieldId];
+      
+      // Only process appointment fields
+      if (field && field.isAppointment) {
+        if (fieldType === 'date') {
+          dateValue = new Date(response.value);
+        } else if (fieldType === 'time') {
+          timeValue = response.value;
+        } else if (fieldType === 'datetime') {
+          return { start: new Date(response.value) };
+        }
       }
     });
 

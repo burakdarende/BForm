@@ -223,9 +223,19 @@ async function processNotifications(form, response, submitterInfo) {
       }
     }
 
-    // Create calendar event
-    if (notifications.calendar?.enabled && submitterInfo.email) {
+    // Create calendar event if form has appointment fields
+    console.log('🔍 Calendar Debug:');
+    console.log('- Form fields:', form.fields?.map(f => ({ type: f.type, isAppointment: f.isAppointment })));
+    
+    const hasAppointmentFields = form.fields?.some(field => 
+      (field.type === 'date' || field.type === 'time') && field.isAppointment
+    );
+    
+    console.log('- Has appointment fields:', hasAppointmentFields);
+    
+    if (hasAppointmentFields) {
       try {
+        console.log('📅 Creating calendar appointment...');
         const eventId = await calendarService.createAppointment(
           form, 
           response, 
@@ -233,8 +243,9 @@ async function processNotifications(form, response, submitterInfo) {
         );
         response.notifications.calendarCreated = true;
         response.notifications.calendarEventId = eventId;
+        console.log('✅ Calendar event created:', eventId);
       } catch (error) {
-        console.error('Calendar notification error:', error);
+        console.error('❌ Calendar notification error:', error);
       }
     }
 

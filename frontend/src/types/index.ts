@@ -61,6 +61,7 @@ export interface FormField {
   options?: FieldOption[];
   validation?: FieldValidation;
   settings?: FieldSettings;
+  isAppointment?: boolean; // For date/time fields to enable calendar integration
 }
 
 // Form Types
