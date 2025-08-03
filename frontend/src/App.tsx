@@ -10,6 +10,7 @@ import FormView from './pages/Form/FormView';
 import FormSubmitted from './pages/Form/FormSubmitted';
 import FormResponses from './pages/Dashboard/FormResponses';
 import FormAnalytics from './pages/Dashboard/FormAnalytics';
+import ThemeManager from './pages/Dashboard/ThemeManager';
 import Settings from './pages/Settings/Settings';
 import NotFound from './pages/NotFound';
 import ProtectedRoute from './components/Auth/ProtectedRoute';
@@ -48,6 +49,11 @@ function App() {
           <Route path="/forms/:formId/analytics" element={
             <ProtectedRoute>
               <FormAnalytics />
+            </ProtectedRoute>
+          } />
+          <Route path="/themes" element={
+            <ProtectedRoute>
+              <ThemeManager />
             </ProtectedRoute>
           } />
           <Route path="/settings" element={

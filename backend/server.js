@@ -50,6 +50,7 @@ app.get('/api/health', (req, res) => {
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/forms', require('./routes/forms'));
 app.use('/api/responses', require('./routes/responses'));
+app.use('/api/themes', require('./routes/themes'));
 app.use('/api/admin', require('./routes/admin'));
 
 // Error handling middleware

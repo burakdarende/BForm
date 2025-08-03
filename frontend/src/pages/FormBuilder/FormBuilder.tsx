@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useForm, Controller } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { generateId } from '../../utils';
+import { api } from '../../api/client';
 import type { Form, FormField, FieldType } from '../../types';
 
 // Field types with icons
@@ -26,23 +27,16 @@ const FIELD_TYPES: Array<{
   { type: 'yes-no', label: 'Evet/Hayır', icon: '✅', description: 'İkili seçim (Evet/Hayır)' },
 ];
 
-// Theme definitions
-const THEME_OPTIONS = [
+// Static fallback themes
+const FALLBACK_THEMES = [
+  { id: 'no-theme', name: 'No Theme', type: 'custom', icon: '⚪', preview: '#E5E7EB' },
   { id: 'theme-classic-blue', name: 'Classic Blue', type: 'light', icon: '🔵', preview: '#3B82F6' },
-  { id: 'theme-midnight-dark', name: 'Midnight Dark', type: 'dark', icon: '🌙', preview: '#0F172A' },
-  { id: 'theme-purple-dream', name: 'Purple Dream', type: 'light', icon: '💜', preview: '#A855F7' },
-  { id: 'theme-forest-green', name: 'Forest Green', type: 'light', icon: '🌲', preview: '#22C55E' },
-  { id: 'theme-sunset-orange', name: 'Sunset Orange', type: 'light', icon: '🧡', preview: '#F97316' },
-  { id: 'theme-ocean-teal', name: 'Ocean Teal', type: 'light', icon: '🌊', preview: '#14B8A6' },
-  { id: 'theme-rose-pink', name: 'Rose Pink', type: 'light', icon: '🌹', preview: '#F43F5E' },
-  { id: 'theme-cosmic-purple', name: 'Cosmic Purple', type: 'dark', icon: '🌌', preview: '#8B5CF6' },
-  { id: 'theme-emerald-glow', name: 'Emerald Glow', type: 'light', icon: '💚', preview: '#10B981' },
-  { id: 'theme-cyber-blue', name: 'Cyber Blue', type: 'dark', icon: '⚡', preview: '#06B6D4' },
 ];
 
 const FormBuilder: React.FC = () => {
   const { formId } = useParams();
   const navigate = useNavigate();
+  const [availableThemes, setAvailableThemes] = useState(FALLBACK_THEMES);
   const [form, setForm] = useState<Partial<Form>>({
     title: 'Başlıksız Form',
     description: '',
@@ -80,7 +74,7 @@ const FormBuilder: React.FC = () => {
       backgroundColor: '#FFFFFF',
       textColor: '#1F2937',
       fontFamily: 'Inter',
-      theme: 'theme-classic-blue',
+      theme: 'no-theme',
       customColors: {
         primary: '#3B82F6',
         background: '#F8FAFC',
@@ -97,12 +91,37 @@ const FormBuilder: React.FC = () => {
 
   const { register, control, handleSubmit, watch, setValue, formState: { errors } } = useForm();
 
+  // Load themes on component mount
+  useEffect(() => {
+    loadThemes();
+  }, []);
+
   // Load existing form if editing
   useEffect(() => {
     if (formId && formId !== 'new') {
       loadForm(formId);
     }
   }, [formId]);
+
+  const loadThemes = async () => {
+    try {
+      const response = await api.themes.getAll();
+      const themes = [
+        { id: 'no-theme', name: 'No Theme', type: 'custom', icon: '⚪', preview: '#E5E7EB' },
+        ...response.data.map((theme: any) => ({
+          id: theme.id,
+          name: theme.name,
+          type: theme.type,
+          icon: theme.icon,
+          preview: theme.preview
+        }))
+      ];
+      setAvailableThemes(themes);
+    } catch (error) {
+      console.error('Load themes error:', error);
+      // Fallback themes already set
+    }
+  };
 
   const loadForm = async (id: string) => {
     try {
@@ -730,75 +749,79 @@ const FormBuilder: React.FC = () => {
                   <div className="field-group border-t pt-4 mt-6">
                     <label className="field-label mb-3">🎨 Form Tasarımı</label>
                     
-                    <div className="space-y-3">
-                      <div>
-                        <label className="text-sm text-gray-600 mb-2 block">Arkaplan Rengi</label>
-                        <div className="flex items-center space-x-2">
-                          <input
-                            type="color"
-                            value={form.styling?.backgroundColor || '#FFFFFF'}
-                            onChange={(e) => setForm(prev => ({
-                              ...prev,
-                              styling: {
-                                ...prev.styling,
-                                backgroundColor: e.target.value
-                              }
-                            }))}
-                            className="w-8 h-8 rounded border border-gray-300 cursor-pointer"
-                          />
-                          <input
-                            type="text"
-                            value={form.styling?.backgroundColor || '#FFFFFF'}
-                            onChange={(e) => setForm(prev => ({
-                              ...prev,
-                              styling: {
-                                ...prev.styling,
-                                backgroundColor: e.target.value
-                              }
-                            }))}
-                            className="form-input flex-1 text-xs"
-                            placeholder="#FFFFFF"
-                          />
-                        </div>
-                      </div>
+                    <>
+                      {form.styling?.theme === 'no-theme' && (
+                        <div className="space-y-3">
+                          <div>
+                            <label className="text-sm text-gray-600 mb-2 block">Arkaplan Rengi</label>
+                            <div className="flex items-center space-x-2">
+                              <input
+                                type="color"
+                                value={form.styling?.backgroundColor || '#FFFFFF'}
+                                onChange={(e) => setForm(prev => ({
+                                  ...prev,
+                                  styling: {
+                                    ...prev.styling,
+                                    backgroundColor: e.target.value
+                                  }
+                                }))}
+                                className="w-8 h-8 rounded border border-gray-300 cursor-pointer"
+                              />
+                              <input
+                                type="text"
+                                value={form.styling?.backgroundColor || '#FFFFFF'}
+                                onChange={(e) => setForm(prev => ({
+                                  ...prev,
+                                  styling: {
+                                    ...prev.styling,
+                                    backgroundColor: e.target.value
+                                  }
+                                }))}
+                                className="form-input flex-1 text-xs"
+                                placeholder="#FFFFFF"
+                              />
+                            </div>
+                          </div>
 
-                      <div>
-                        <label className="text-sm text-gray-600 mb-2 block">Vurgu Rengi</label>
-                        <div className="flex items-center space-x-2">
-                          <input
-                            type="color"
-                            value={form.styling?.primaryColor || '#3B82F6'}
-                            onChange={(e) => setForm(prev => ({
-                              ...prev,
-                              styling: {
-                                ...prev.styling,
-                                primaryColor: e.target.value
-                              }
-                            }))}
-                            className="w-8 h-8 rounded border border-gray-300 cursor-pointer"
-                          />
-                          <input
-                            type="text"
-                            value={form.styling?.primaryColor || '#3B82F6'}
-                            onChange={(e) => setForm(prev => ({
-                              ...prev,
-                              styling: {
-                                ...prev.styling,
-                                primaryColor: e.target.value
-                              }
-                            }))}
-                            className="form-input flex-1 text-xs"
-                            placeholder="#3B82F6"
-                          />
+                          <div>
+                            <label className="text-sm text-gray-600 mb-2 block">Vurgu Rengi</label>
+                            <div className="flex items-center space-x-2">
+                              <input
+                                type="color"
+                                value={form.styling?.primaryColor || '#3B82F6'}
+                                onChange={(e) => setForm(prev => ({
+                                  ...prev,
+                                  styling: {
+                                    ...prev.styling,
+                                    primaryColor: e.target.value
+                                  }
+                                }))}
+                                className="w-8 h-8 rounded border border-gray-300 cursor-pointer"
+                              />
+                              <input
+                                type="text"
+                                value={form.styling?.primaryColor || '#3B82F6'}
+                                onChange={(e) => setForm(prev => ({
+                                  ...prev,
+                                  styling: {
+                                    ...prev.styling,
+                                    primaryColor: e.target.value
+                                  }
+                                }))}
+                                className="form-input flex-1 text-xs"
+                                placeholder="#3B82F6"
+                              />
+                            </div>
+                          </div>
                         </div>
-                      </div>
+                      )}
 
                       {/* Theme Selection */}
                       <div className="field-group border-t pt-4 mt-6">
                         <label className="field-label mb-3">🎨 Tema Seçimi</label>
                         
                         <div className="grid grid-cols-2 gap-2 mb-4">
-                          {THEME_OPTIONS.map((theme) => (
+                          {availableThemes.map((theme) => (
                             <button
                               key={theme.id}
                               onClick={() => setForm(prev => ({
@@ -829,84 +852,9 @@ const FormBuilder: React.FC = () => {
                           ))}
                         </div>
 
-                        {/* Custom Color Tweaks */}
-                        <div className="space-y-3 border-t pt-3">
-                          <div>
-                            <label className="text-xs text-gray-600 mb-1 block">Primary Color</label>
-                            <div className="flex items-center space-x-2">
-                              <input
-                                type="color"
-                                value={form.styling?.customColors?.primary || '#3B82F6'}
-                                onChange={(e) => setForm(prev => ({
-                                  ...prev,
-                                  styling: {
-                                    ...prev.styling,
-                                    customColors: {
-                                      ...prev.styling?.customColors,
-                                      primary: e.target.value
-                                    }
-                                  }
-                                }))}
-                                className="w-6 h-6 rounded border cursor-pointer"
-                              />
-                              <input
-                                type="text"
-                                value={form.styling?.customColors?.primary || '#3B82F6'}
-                                onChange={(e) => setForm(prev => ({
-                                  ...prev,
-                                  styling: {
-                                    ...prev.styling,
-                                    customColors: {
-                                      ...prev.styling?.customColors,
-                                      primary: e.target.value
-                                    }
-                                  }
-                                }))}
-                                className="text-xs border border-gray-300 rounded px-2 py-1 flex-1"
-                                placeholder="#3B82F6"
-                              />
-                            </div>
-                          </div>
 
-                          <div>
-                            <label className="text-xs text-gray-600 mb-1 block">Background Color</label>
-                            <div className="flex items-center space-x-2">
-                              <input
-                                type="color"
-                                value={form.styling?.customColors?.background || '#F8FAFC'}
-                                onChange={(e) => setForm(prev => ({
-                                  ...prev,
-                                  styling: {
-                                    ...prev.styling,
-                                    customColors: {
-                                      ...prev.styling?.customColors,
-                                      background: e.target.value
-                                    }
-                                  }
-                                }))}
-                                className="w-6 h-6 rounded border cursor-pointer"
-                              />
-                              <input
-                                type="text"
-                                value={form.styling?.customColors?.background || '#F8FAFC'}
-                                onChange={(e) => setForm(prev => ({
-                                  ...prev,
-                                  styling: {
-                                    ...prev.styling,
-                                    customColors: {
-                                      ...prev.styling?.customColors,
-                                      background: e.target.value
-                                    }
-                                  }
-                                }))}
-                                className="text-xs border border-gray-300 rounded px-2 py-1 flex-1"
-                                placeholder="#F8FAFC"
-                              />
-                            </div>
-                          </div>
-                        </div>
                       </div>
-                    </div>
+                    </>
                   </div>
                 </div>
               </div>

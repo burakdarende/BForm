@@ -481,6 +481,12 @@
     opacity: 1 !important;
   }
 
+  /* Demo preview placeholder */
+  .demo-preview input::placeholder {
+    color: var(--placeholder-color, rgba(107, 114, 128, 0.7)) !important;
+    opacity: 1 !important;
+  }
+
   /* Mobile-specific input styles - keep underline style */
   .typeform-input[type="date"],
   .typeform-input[type="time"],

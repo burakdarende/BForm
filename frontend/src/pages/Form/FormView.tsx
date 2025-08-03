@@ -58,26 +58,52 @@ const FormView: React.FC = () => {
 
   // Apply theme and custom colors
   useEffect(() => {
-    if (form?.styling) {
-      const root = document.documentElement;
-      
-      // Apply custom colors if they exist
-      if (form.styling.customColors?.primary) {
-        root.style.setProperty('--primary-color', form.styling.customColors.primary);
+    const applyTheme = async () => {
+      if (form?.styling) {
+        console.log('FormView: Applying theme, form styling:', form.styling);
+        const root = document.documentElement;
+        
+        // If form has a theme (not no-theme), load theme from database
+        if (form.styling.theme && form.styling.theme !== 'no-theme') {
+          console.log('FormView: Loading theme from database:', form.styling.theme);
+          try {
+            const response = await fetch('/api/themes');
+            if (response.ok) {
+              const themes = await response.json();
+              console.log('FormView: Available themes:', themes);
+              const selectedTheme = themes.find((theme: any) => theme.id === form.styling.theme);
+              
+              if (selectedTheme) {
+                console.log('FormView: Found theme, applying colors:', selectedTheme);
+                root.style.setProperty('--primary-color', selectedTheme.colors.primary);
+                root.style.setProperty('--theme-background', selectedTheme.colors.background);
+                root.style.setProperty('--text-color', selectedTheme.colors.text);
+                root.style.setProperty('--input-border-color', selectedTheme.colors.inputBorder);
+                root.style.setProperty('--placeholder-color', selectedTheme.colors.placeholder);
+                console.log('FormView: CSS variables applied');
+                return;
+              } else {
+                console.log('FormView: Theme not found in database');
+              }
+            }
+          } catch (error) {
+            console.error('FormView: Failed to load theme:', error);
+          }
+        } else {
+          console.log('FormView: No theme selected or no-theme selected');
+        }
+        
+        // Fallback to custom colors or default values
+        console.log('FormView: Using fallback colors');
+        root.style.setProperty('--primary-color', form.styling.customColors?.primary || form.styling.primaryColor || '#3B82F6');
+        root.style.setProperty('--theme-background', form.styling.customColors?.background || form.styling.backgroundColor || '#FFFFFF');
+        root.style.setProperty('--text-color', form.styling.customColors?.text || form.styling.textColor || '#1F2937');
+        root.style.setProperty('--input-border-color', form.styling.customColors?.inputBorder || form.styling.primaryColor + '4D' || '#3B82F64D');
+        root.style.setProperty('--placeholder-color', form.styling.customColors?.placeholder || '#64748B80');
       }
-      if (form.styling.customColors?.background) {
-        root.style.setProperty('--theme-background', form.styling.customColors.background);
-      }
-      if (form.styling.customColors?.text) {
-        root.style.setProperty('--text-color', form.styling.customColors.text);
-      }
-      if (form.styling.customColors?.inputBorder) {
-        root.style.setProperty('--input-border-color', form.styling.customColors.inputBorder);
-      }
-      if (form.styling.customColors?.placeholder) {
-        root.style.setProperty('--placeholder-color', form.styling.customColors.placeholder);
-      }
-    }
+    };
+    
+    applyTheme();
   }, [form?.styling]);
 
   const loadForm = async (formSlug: string) => {
@@ -610,7 +636,7 @@ const FormView: React.FC = () => {
   const currentField = !isSubmitted ? form.fields[currentStep] : null;
   const progress = !isSubmitted ? ((currentStep + 1) / form.fields.length) * 100 : 100;
 
-  const themeClass = form?.styling?.theme || 'theme-classic-blue';
+  const themeClass = form?.styling?.theme === 'no-theme' ? '' : (form?.styling?.theme || 'theme-classic-blue');
   
   console.log('Current theme:', themeClass, 'Form styling:', form?.styling);
 

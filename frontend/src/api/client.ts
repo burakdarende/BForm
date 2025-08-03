@@ -92,6 +92,15 @@ export const api = {
       apiClient.patch(`/responses/${responseId}/status`, { status, notes }),
   },
 
+  // Themes
+  themes: {
+    getAll: () => apiClient.get('/themes'),
+    get: (id: string) => apiClient.get(`/themes/${id}`),
+    create: (themeData: any) => apiClient.post('/themes', themeData),
+    update: (id: string, themeData: any) => apiClient.put(`/themes/${id}`, themeData),
+    delete: (id: string) => apiClient.delete(`/themes/${id}`),
+  },
+
   // Admin
   admin: {
     getDashboard: () => apiClient.get('/admin/dashboard'),
