@@ -43,6 +43,28 @@ const themeSchema = new mongoose.Schema({
       required: true
     }
   },
+  defaultColors: {
+    primary: {
+      type: String,
+      required: true
+    },
+    background: {
+      type: String,
+      required: true
+    },
+    text: {
+      type: String,
+      required: true
+    },
+    inputBorder: {
+      type: String,
+      required: true
+    },
+    placeholder: {
+      type: String,
+      required: true
+    }
+  },
   preview: {
     type: String,
     required: true

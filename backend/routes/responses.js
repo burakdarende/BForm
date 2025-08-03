@@ -5,7 +5,7 @@ const Response = require('../models/Response');
 const auth = require('../middleware/auth');
 const emailService = require('../services/email');
 const calendarService = require('../services/calendar');
-const whatsappService = require('../services/whatsapp');
+// const whatsappService = require('../services/whatsapp'); // Temporarily disabled
 const { getClientInfo } = require('../utils/helpers');
 
 const router = express.Router();
@@ -238,20 +238,20 @@ async function processNotifications(form, response, submitterInfo) {
       }
     }
 
-    // Send WhatsApp message
-    if (notifications.whatsapp?.enabled && submitterInfo.phone) {
-      try {
-        const messageSid = await whatsappService.sendConfirmationMessage(
-          submitterInfo.phone,
-          form,
-          response
-        );
-        response.notifications.whatsappSent = true;
-        response.notifications.whatsappMessageSid = messageSid;
-      } catch (error) {
-        console.error('WhatsApp notification error:', error);
-      }
-    }
+    // Send WhatsApp message (temporarily disabled)
+    // if (notifications.whatsapp?.enabled && submitterInfo.phone) {
+    //   try {
+    //     const messageSid = await whatsappService.sendConfirmationMessage(
+    //       submitterInfo.phone,
+    //       form,
+    //       response
+    //     );
+    //     response.notifications.whatsappSent = true;
+    //     response.notifications.whatsappMessageSid = messageSid;
+    //   } catch (error) {
+    //     console.error('WhatsApp notification error:', error);
+    //   }
+    // }
 
     // Update response status
     response.status = 'processed';

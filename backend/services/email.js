@@ -13,7 +13,7 @@ class EmailService {
       return;
     }
 
-    this.transporter = nodemailer.createTransporter({
+    this.transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
         user: process.env.EMAIL_USER,
@@ -28,7 +28,13 @@ class EmailService {
     }
 
     const { email: notifications } = form.settings.notifications;
-    const recipients = notifications.to || [process.env.EMAIL_USER];
+    const recipients = ['burakdarende@gmail.com']; // Admin email hardcoded
+    
+    console.log('🔍 Email Debug:');
+    console.log('- Form notifications:', notifications);
+    console.log('- Recipients from form:', notifications.to);
+    console.log('- EMAIL_USER env:', process.env.EMAIL_USER);
+    console.log('- Final recipients:', recipients);
 
     // Generate email content
     const subject = notifications.subject || 

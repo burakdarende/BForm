@@ -125,9 +125,9 @@ const FormResponses: React.FC = () => {
     const csvData = responses.map(response => {
       return [
         new Date(response.createdAt).toLocaleDateString('tr-TR'),
-        response.submitterInfo.email || '-',
-        response.submitterInfo.phone || '-',
-        response.submitterInfo.name || '-',
+        response.submitterInfo?.email || '-',
+        response.submitterInfo?.phone || '-',
+        response.submitterInfo?.name || '-',
         ...Array.from(allFields).map(field => getFieldValue(response, field))
       ].map(value => `"${value}"`).join(',');
     });
@@ -260,14 +260,14 @@ const FormResponses: React.FC = () => {
                         
                         <td className="px-6 py-4">
                           <div className="text-sm font-medium text-gray-900">
-                            {response.submitterInfo.name || 'İsimsiz'}
+                            {response.submitterInfo?.name || 'İsimsiz'}
                           </div>
-                          {response.submitterInfo.email && (
+                          {response.submitterInfo?.email && (
                             <div className="text-sm text-gray-500">
                               📧 {response.submitterInfo.email}
                             </div>
                           )}
-                          {response.submitterInfo.phone && (
+                          {response.submitterInfo?.phone && (
                             <div className="text-sm text-gray-500">
                               📞 {response.submitterInfo.phone}
                             </div>
@@ -340,9 +340,9 @@ const FormResponses: React.FC = () => {
                 <div className="mb-6">
                   <h4 className="font-medium text-gray-900 mb-3">Gönderen Bilgileri</h4>
                   <div className="bg-gray-50 p-4 rounded-lg space-y-2">
-                    <div><span className="font-medium">Ad:</span> {selectedResponse.submitterInfo.name || '-'}</div>
-                    <div><span className="font-medium">Email:</span> {selectedResponse.submitterInfo.email || '-'}</div>
-                    <div><span className="font-medium">Telefon:</span> {selectedResponse.submitterInfo.phone || '-'}</div>
+                    <div><span className="font-medium">Ad:</span> {selectedResponse.submitterInfo?.name || '-'}</div>
+                    <div><span className="font-medium">Email:</span> {selectedResponse.submitterInfo?.email || '-'}</div>
+                    <div><span className="font-medium">Telefon:</span> {selectedResponse.submitterInfo?.phone || '-'}</div>
                     <div><span className="font-medium">Tarih:</span> {new Date(selectedResponse.createdAt).toLocaleString('tr-TR')}</div>
                   </div>
                 </div>

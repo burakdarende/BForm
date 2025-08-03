@@ -14,8 +14,16 @@ const INITIAL_THEMES = [
       inputBorder: '#3B82F64D',
       placeholder: '#64748B80'
     },
+    defaultColors: {
+      primary: '#3B82F6',
+      background: '#FFFFFF',
+      text: '#1F2937',
+      inputBorder: '#3B82F64D',
+      placeholder: '#64748B80'
+    },
     preview: '#3B82F6',
-    isDefault: true
+    isDefault: true,
+    shapes: { enabled: false, shapes: [] }
   },
   {
     name: 'Midnight Dark',
@@ -164,9 +172,16 @@ async function seedThemes() {
     await Theme.deleteMany({});
     console.log('🗑️  Cleared existing themes');
 
+    // Add defaultColors to each theme (copy from colors)
+    const themesWithDefaults = INITIAL_THEMES.map(theme => ({
+      ...theme,
+      defaultColors: theme.defaultColors || { ...theme.colors },
+      shapes: theme.shapes || { enabled: false, shapes: [] }
+    }));
+
     // Insert initial themes
-    await Theme.insertMany(INITIAL_THEMES);
-    console.log(`✅ Added ${INITIAL_THEMES.length} themes`);
+    await Theme.insertMany(themesWithDefaults);
+    console.log(`✅ Added ${themesWithDefaults.length} themes`);
 
     console.log('🎨 Theme seeding completed!');
     process.exit(0);

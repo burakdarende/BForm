@@ -136,6 +136,28 @@ router.put('/:id', auth, [
   }
 });
 
+// Reset theme to default colors (protected)
+router.put('/:id/reset', auth, async (req, res) => {
+  try {
+    const theme = await Theme.findById(req.params.id);
+    if (!theme) {
+      return res.status(404).json({ message: 'Tema bulunamadı' });
+    }
+
+    // Reset colors to default colors
+    theme.colors = { ...theme.defaultColors };
+    await theme.save();
+
+    res.json({
+      message: 'Tema varsayılan renklerine döndürüldü',
+      theme
+    });
+  } catch (error) {
+    console.error('Reset theme error:', error);
+    res.status(500).json({ message: 'Sunucu hatası' });
+  }
+});
+
 // Delete theme (protected)
 router.delete('/:id', auth, async (req, res) => {
   try {
@@ -154,6 +176,18 @@ router.delete('/:id', auth, async (req, res) => {
   } catch (error) {
     console.error('Delete theme error:', error);
     res.status(500).json({ message: 'Sunucu hatası' });
+  }
+});
+
+// Test email endpoint
+router.post('/test-email', async (req, res) => {
+  try {
+    const emailService = require('../services/email');
+    await emailService.testConnection();
+    res.json({ success: true, message: 'Email bağlantısı başarılı!' });
+  } catch (error) {
+    console.error('Email test error:', error);
+    res.status(500).json({ success: false, error: error.message });
   }
 });
 

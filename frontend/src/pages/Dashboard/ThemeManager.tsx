@@ -201,6 +201,18 @@ const ThemeManager: React.FC = () => {
     }
   };
 
+  const handleReset = async (themeId: string) => {
+    if (!confirm('Bu temayı varsayılan renklerine döndürmek istediğinizden emin misiniz?')) return;
+    
+    try {
+      await api.themes.reset(themeId);
+      toast.success('Tema varsayılan renklerine döndürüldü');
+      loadThemes();
+    } catch (error: any) {
+      toast.error(error.response?.data?.message || 'Reset hatası');
+    }
+  };
+
   const handleEdit = (theme: Theme) => {
     setEditingTheme(theme);
     setFormData({
@@ -652,6 +664,13 @@ const ThemeManager: React.FC = () => {
                   className="flex-1 bg-blue-50 text-blue-700 px-3 py-2 rounded hover:bg-blue-100 text-sm"
                 >
                   Düzenle
+                </button>
+                <button
+                  onClick={() => handleReset(theme._id)}
+                  className="flex-1 bg-orange-50 text-orange-700 px-3 py-2 rounded hover:bg-orange-100 text-sm"
+                  title="Varsayılan renklerine dön"
+                >
+                  ↻ Varsayılan
                 </button>
                 {!theme.isDefault && (
                   <button

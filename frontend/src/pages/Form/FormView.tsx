@@ -19,6 +19,7 @@ const FormView: React.FC = () => {
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
+  const [themeShapes, setThemeShapes] = useState<any[]>([]);
   const containerRef = useRef<HTMLDivElement>(null);
 
   const { register, control, watch, setValue, formState: { errors }, trigger } = useForm();
@@ -60,46 +61,48 @@ const FormView: React.FC = () => {
   useEffect(() => {
     const applyTheme = async () => {
       if (form?.styling) {
-        console.log('FormView: Applying theme, form styling:', form.styling);
         const root = document.documentElement;
         
         // If form has a theme (not no-theme), load theme from database
         if (form.styling.theme && form.styling.theme !== 'no-theme') {
-          console.log('FormView: Loading theme from database:', form.styling.theme);
           try {
-            const response = await fetch('/api/themes');
+            const response = await fetch(`/api/themes?t=${Date.now()}`);
             if (response.ok) {
               const themes = await response.json();
-              console.log('FormView: Available themes:', themes);
               const selectedTheme = themes.find((theme: any) => theme.id === form.styling.theme);
               
               if (selectedTheme) {
-                console.log('FormView: Found theme, applying colors:', selectedTheme);
                 root.style.setProperty('--primary-color', selectedTheme.colors.primary);
                 root.style.setProperty('--theme-background', selectedTheme.colors.background);
                 root.style.setProperty('--text-color', selectedTheme.colors.text);
                 root.style.setProperty('--input-border-color', selectedTheme.colors.inputBorder);
                 root.style.setProperty('--placeholder-color', selectedTheme.colors.placeholder);
-                console.log('FormView: CSS variables applied');
+                
+                // Set theme shapes if enabled
+                if (selectedTheme.shapes?.enabled && selectedTheme.shapes?.shapes) {
+                  console.log('FormView: Loading theme shapes:', selectedTheme.shapes.shapes);
+                  setThemeShapes(selectedTheme.shapes.shapes);
+                } else {
+                  console.log('FormView: No shapes enabled for theme');
+                  setThemeShapes([]);
+                }
                 return;
-              } else {
-                console.log('FormView: Theme not found in database');
               }
             }
           } catch (error) {
-            console.error('FormView: Failed to load theme:', error);
+            console.error('Failed to load theme:', error);
           }
-        } else {
-          console.log('FormView: No theme selected or no-theme selected');
         }
         
         // Fallback to custom colors or default values
-        console.log('FormView: Using fallback colors');
         root.style.setProperty('--primary-color', form.styling.customColors?.primary || form.styling.primaryColor || '#3B82F6');
         root.style.setProperty('--theme-background', form.styling.customColors?.background || form.styling.backgroundColor || '#FFFFFF');
         root.style.setProperty('--text-color', form.styling.customColors?.text || form.styling.textColor || '#1F2937');
         root.style.setProperty('--input-border-color', form.styling.customColors?.inputBorder || form.styling.primaryColor + '4D' || '#3B82F64D');
         root.style.setProperty('--placeholder-color', form.styling.customColors?.placeholder || '#64748B80');
+        
+        // No shapes for custom colors
+        setThemeShapes([]);
       }
     };
     
@@ -636,16 +639,38 @@ const FormView: React.FC = () => {
   const currentField = !isSubmitted ? form.fields[currentStep] : null;
   const progress = !isSubmitted ? ((currentStep + 1) / form.fields.length) * 100 : 100;
 
-  const themeClass = form?.styling?.theme === 'no-theme' ? '' : (form?.styling?.theme || 'theme-classic-blue');
-  
-  console.log('Current theme:', themeClass, 'Form styling:', form?.styling);
+  // Don't use CSS theme class if form has a selected theme (we use CSS variables instead)
+  const themeClass = (!form?.styling?.theme || form?.styling?.theme === 'no-theme') ? '' : '';
 
   return (
     <div 
       className={`typeform-container ${themeClass}`}
+      style={{ position: 'relative', overflow: 'hidden' }}
     >
+      {/* Background Shapes */}
+      {themeShapes.length > 0 && console.log('FormView: Rendering', themeShapes.length, 'shapes')}
+      {themeShapes.map((shape, index) => (
+        <div
+          key={index}
+          className="absolute pointer-events-none"
+          style={{
+            left: `${shape.x}%`,
+            top: `${shape.y}%`,
+            width: `${shape.size}px`,
+            height: `${shape.size}px`,
+            opacity: shape.opacity,
+            transform: `rotate(${shape.rotation}deg)`,
+            backgroundColor: shape.color,
+            borderRadius: shape.type === 'circle' ? '50%' : 
+                         shape.type === 'blob' ? '30% 70% 70% 30% / 30% 30% 70% 70%' : '0',
+            clipPath: shape.type === 'triangle' ? 'polygon(50% 0%, 0% 100%, 100% 100%)' : 'none',
+            zIndex: 1
+          }}
+        />
+      ))}
+
       {/* Progress Bar */}
-      <div className="typeform-progress">
+      <div className="typeform-progress" style={{ position: 'relative', zIndex: 10 }}>
         <div 
           className="typeform-progress-bar"
           style={{ 
@@ -656,7 +681,7 @@ const FormView: React.FC = () => {
       </div>
 
       {/* Question */}
-      <div className="typeform-question-container">
+      <div className="typeform-question-container" style={{ position: 'relative', zIndex: 10 }}>
         <div 
           className={`typeform-question ${isTransitioning ? 'transitioning' : ''}`}
           ref={containerRef}

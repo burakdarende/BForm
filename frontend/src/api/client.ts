@@ -98,6 +98,7 @@ export const api = {
     get: (id: string) => apiClient.get(`/themes/${id}`),
     create: (themeData: any) => apiClient.post('/themes', themeData),
     update: (id: string, themeData: any) => apiClient.put(`/themes/${id}`, themeData),
+    reset: (id: string) => apiClient.put(`/themes/${id}/reset`),
     delete: (id: string) => apiClient.delete(`/themes/${id}`),
   },
 
