@@ -7,8 +7,8 @@ require('dotenv').config();
 
 const app = express();
 
-// Security middleware
-app.use(helmet());
+// Security middleware - temporarily disabled for CORS debugging
+// app.use(helmet());
 
 // Rate limiting
 const limiter = rateLimit({
@@ -18,9 +18,9 @@ const limiter = rateLimit({
 });
 app.use(limiter);
 
-// CORS configuration
+// CORS configuration - more permissive for development
 app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:3000',
+  origin: true, // Allow all origins
   credentials: true
 }));
 
@@ -51,7 +51,16 @@ app.use('/api/auth', require('./routes/auth'));
 app.use('/api/forms', require('./routes/forms'));
 app.use('/api/responses', require('./routes/responses'));
 app.use('/api/themes', require('./routes/themes'));
+app.use('/api/upload', require('./routes/upload'));
 app.use('/api/admin', require('./routes/admin'));
+
+// Serve uploaded images with custom middleware
+app.use('/uploads', (req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET');
+  res.header('Access-Control-Allow-Headers', 'Content-Type');
+  next();
+}, express.static('uploads'));
 
 // Error handling middleware
 app.use((err, req, res, next) => {

@@ -1,29 +1,27 @@
-# Bu dosyayı .env olarak kopyalayın ve kendi bilgilerinizi girin
-
 # MongoDB
 MONGODB_URI=mongodb://mongo:27017/bform
 
 # JWT Secret
-JWT_SECRET=your-super-secret-jwt-key-here
-
-# Email Settings (Gmail)
-EMAIL_USER=your-email@gmail.com
-EMAIL_PASS=your-app-password
-
-# Google Calendar API
-GOOGLE_CLIENT_ID=your-google-client-id
-GOOGLE_CLIENT_SECRET=your-google-client-secret
-GOOGLE_REDIRECT_URI=http://localhost:5000/auth/google/callback
-GOOGLE_REFRESH_TOKEN=your-google-refresh-token
-
-# Twilio (WhatsApp)
-TWILIO_ACCOUNT_SID=your-twilio-account-sid
-TWILIO_AUTH_TOKEN=your-twilio-auth-token
-TWILIO_WHATSAPP_FROM=whatsapp:+14155238886
+JWT_SECRET=your_jwt_secret_key_here
 
 # Frontend URL
 FRONTEND_URL=http://localhost:3000
 
-# Server Settings
-PORT=5000
-NODE_ENV=development
+# Backend URL (for emails etc.)
+VITE_BACKEND_URL=http://localhost:5000
+
+# Nodemailer (Gmail with App Password)
+EMAIL_HOST=smtp.gmail.com
+EMAIL_PORT=587
+EMAIL_USER=your-email@gmail.com
+EMAIL_PASS=your-gmail-app-password
+
+# Google Calendar API
+GOOGLE_CLIENT_ID=your-google-client-id
+GOOGLE_CLIENT_SECRET=your-google-client-secret
+GOOGLE_REFRESH_TOKEN=your-google-refresh-token
+GOOGLE_CALENDAR_ID=primary
+
+# Cloudflare Turnstile
+VITE_TURNSTILE_SITE_KEY="0x4AAAAAAABps-mipfedSSmEU"
+CLOUDFLARE_TURNSTILE_SECRET_KEY="0x4AAAAAAABps-h2nCQ24ViZYiFRbDue0JCw"

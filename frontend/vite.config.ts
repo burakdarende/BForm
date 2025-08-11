@@ -4,6 +4,7 @@ import path from 'path';
 
 export default defineConfig({
   plugins: [react()],
+  envPrefix: 'VITE_',
   server: {
     host: '0.0.0.0',
     port: 3000,
@@ -15,6 +16,9 @@ export default defineConfig({
         target: 'http://backend:5000',
         changeOrigin: true,
       },
+    },
+    headers: {
+      'Content-Security-Policy': "frame-src 'self' https://challenges.cloudflare.com https://*.cloudflare.com; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://challenges.cloudflare.com https://*.cloudflare.com;"
     },
   },
   resolve: {

@@ -28,6 +28,7 @@ export type FieldType =
   | 'time' 
   | 'datetime' 
   | 'file' 
+  | 'image'
   | 'rating' 
   | 'scale' 
   | 'yes-no';
@@ -255,6 +256,7 @@ export interface AuthState {
 export interface LoginCredentials {
   email: string;
   password: string;
+  cf_token?: string;
 }
 
 export interface RegisterCredentials {

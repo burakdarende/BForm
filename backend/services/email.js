@@ -66,16 +66,26 @@ class EmailService {
   }
 
   generateSubmissionEmailHtml(form, response, submitterInfo) {
-    const responseHtml = response.responses.map(resp => `
-      <tr>
-        <td style="padding: 8px; border-bottom: 1px solid #eee; font-weight: bold;">
-          ${resp.fieldLabel}
-        </td>
-        <td style="padding: 8px; border-bottom: 1px solid #eee;">
-          ${Array.isArray(resp.value) ? resp.value.join(', ') : resp.value}
-        </td>
-      </tr>
-    `).join('');
+    const responseHtml = response.responses.map(resp => {
+      let value = Array.isArray(resp.value) ? resp.value.join(', ') : resp.value;
+      
+      // If the value is an image URL, display it as an image
+      if (resp.fieldType === 'image' && value && typeof value === 'string' && value.startsWith('/uploads/images/')) {
+        const fullUrl = `${process.env.BACKEND_URL}${value}`;
+        value = `<a href="${fullUrl}" target="_blank"><img src="${fullUrl}" alt="${resp.fieldLabel}" style="max-width: 100%; height: auto; border-radius: 8px;" /></a>`;
+      }
+      
+      return `
+        <tr>
+          <td style="padding: 8px; border-bottom: 1px solid #eee; font-weight: bold;">
+            ${resp.fieldLabel}
+          </td>
+          <td style="padding: 8px; border-bottom: 1px solid #eee;">
+            ${value}
+          </td>
+        </tr>
+      `;
+    }).join('');
 
     return `
       <!DOCTYPE html>

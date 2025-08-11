@@ -2,8 +2,8 @@ import { Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './hooks/useAuth';
 import Layout from './components/Layout/Layout';
 import Home from './pages/Home';
-import Login from './pages/Auth/Login';
-import Register from './pages/Auth/Register';
+
+
 import Dashboard from './pages/Dashboard/Dashboard';
 import FormBuilder from './pages/FormBuilder/FormBuilder';
 import FormView from './pages/Form/FormView';
@@ -22,8 +22,8 @@ function App() {
         {/* Public Routes */}
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
+
+
           
           {/* Protected Admin Routes */}
           <Route path="/dashboard" element={

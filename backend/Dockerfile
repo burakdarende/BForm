@@ -1,5 +1,8 @@
 FROM node:18-alpine
 
+# Install build dependencies for sharp
+RUN apk add --no-cache build-base gcc autoconf automake zlib-dev libgsf-dev vips-dev
+
 WORKDIR /app
 
 # Copy package files

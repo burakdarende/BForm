@@ -25,6 +25,7 @@ const FIELD_TYPES: Array<{
   { type: 'time', label: 'Saat', icon: '🕐', description: 'Saat seçici' },
   { type: 'rating', label: 'Puanlama', icon: '⭐', description: 'Yıldızlı puanlama sistemi' },
   { type: 'yes-no', label: 'Evet/Hayır', icon: '✅', description: 'İkili seçim (Evet/Hayır)' },
+  { type: 'image', label: 'Görsel Yükleme', icon: '🖼️', description: 'Fotoğraf/görsel yükleme alanı' },
 ];
 
 // Static fallback themes
